@@ -1,8 +1,5 @@
 description: Upload Code Coverage to Code Climate
 inputs:
-  repositoryPath:
-    description: The repository path
-    required: true
   reporterId:
     description: The Code Climate CC_TEST_REPORTER_ID
     required: true
@@ -16,27 +13,24 @@ inputs:
     required: false
 runs:
   using: composite
-  steps:
-    - uses: actions/checkout@v3
-      with:
-        path: "${{ inputs.repositoryPath }}"
+  steps:    
     - uses: actions/setup-node@v3
       with:
         node-version: "${{ inputs.nodeVersion }}"
-    - name: Install dependencies & running tests
-    - working-directory: "${{ inputs.repositoryPath }}"
+
     - run: |
           echo node v${{ inputs.nodeVersion }}
           echo CC_ID ${{ inputs.reporterId }}
           echo path ${{ inputs.repositoryPath }}
           echo command ${{ inputs.coverageCommand }}
-          npm install
-          npm run ${{ inputs.coverageCommand }}
-      shell: bash
+    - shell: bash
+      
+    - run: npm install
+    - shell: bash
+
+    - run: "npm run ${{ inputs.coverageCommand }}"
+    - shell: bash
     
-    - name: Publishing coverage data to CodeClimate
     - uses: paambaati/codeclimate-action@v3.2.0
-      with:
-        path: "${{ inputs.repositoryPath }}"
       env:
-        CC_TEST_REPORTER_ID: "${{ inputs.reporterId }}"
+       CC_TEST_REPORTER_ID: "${{ inputs.reporterId }}"
