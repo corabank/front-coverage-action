@@ -21,7 +21,6 @@ runs:
     - run: |
           echo node v${{ inputs.nodeVersion }}
           echo CC_ID ${{ inputs.reporterId }}
-          echo path ${{ inputs.repositoryPath }}
           echo command ${{ inputs.coverageCommand }}
     - shell: bash
       
