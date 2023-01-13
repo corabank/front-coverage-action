@@ -24,18 +24,19 @@ runs:
       with:
         node-version: "${{ inputs.nodeVersion }}"
     - name: Install dependencies & running tests
-      working-directory: "${{ inputs.repositoryPath }}"
+    - working-directory: "${{ inputs.repositoryPath }}"
     - run: |
-        echo node v${{ inputs.nodeVersion }}
-        echo CC_ID ${{ inputs.reporterId }}
-        echo path ${{ inputs.repositoryPath }}
-        echo command ${{ inputs.coverageCommand }}
+          echo node v${{ inputs.nodeVersion }}
+          echo CC_ID ${{ inputs.reporterId }}
+          echo path ${{ inputs.repositoryPath }}
+          echo command ${{ inputs.coverageCommand }}
+          npm install
+          npm run ${{ inputs.coverageCommand }}
       shell: bash
-    - run: npm install
-      shell: bash
-    - run: "npm run ${{ inputs.coverageCommand }}"
-      shell: bash
+    
     - name: Publishing coverage data to CodeClimate
     - uses: paambaati/codeclimate-action@v3.2.0
+      with:
+        path: "${{ inputs.repositoryPath }}"
       env:
         CC_TEST_REPORTER_ID: "${{ inputs.reporterId }}"
