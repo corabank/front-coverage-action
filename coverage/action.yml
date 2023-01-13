@@ -1,0 +1,28 @@
+name: Cora - CodeClimate Coverage
+description: 'Upload Code Coverage to Code Climate'
+inputs:
+  reporterId: 
+    description: 'The Code Climate CC_TEST_REPORTER_ID'
+    required: true
+  nodeVersion:
+    description: 'The node version to use'
+    default: '16.x'
+    required: false
+  coverageCommand:
+    description: 'The coverage command to use'
+    default: 'jest'
+    required: false
+
+runs:
+  using: "composite"
+  steps: 
+    name: Run tests & publish coverage to CodeClimate
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.nodeVersion }}
+      - run: npm install
+      - run: npm run ${{ inputs.coverageCommand }}
+      - uses: paambaati/codeclimate-action@v3.2.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ inputs.reporterId }}
