@@ -14,13 +14,14 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: actions/checkout@master
     - uses: actions/setup-node@v3
       with:
-        node-version: '${{ inputs.nodeVersion }}'
+        node-version: "${{ inputs.nodeVersion }}"
     - run: |
         npm install
         npm run ${{ inputs.coverageCommand }}
       shell: bash
     - uses: paambaati/codeclimate-action@v3.2.0
       env:
-        CC_TEST_REPORTER_ID: '${{ inputs.reporterId }}'
+        CC_TEST_REPORTER_ID: "${{ inputs.reporterId }}"
